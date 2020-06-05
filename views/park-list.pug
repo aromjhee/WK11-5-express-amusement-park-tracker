@@ -1,0 +1,20 @@
+extends layout.pug
+
+block content
+  nav
+    a.btn.btn-success(href='/park/add' role='button') Add Park
+  div.py-3
+    table.table.table-striped.table-hover
+      thead.thead-dark
+        tr
+          th(scope='col') Park Name
+          th(scope='col') Location
+          th(scope='col') Opened
+      tbody
+        each park in parks
+          tr
+            td= park.parkName
+            td #{park.city}, #{park.provinceState} #{park.country}
+            td= park.opened
+            td
+              a.btn.btn-primary(href=`/park/${park.id}` role='button') Details
