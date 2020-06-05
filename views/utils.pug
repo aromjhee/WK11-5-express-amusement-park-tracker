@@ -1,0 +1,12 @@
+mixin textField(labelText, fieldName, fieldValue, whatType, placeholder)
+  div.form-group
+    label(for=fieldName)= labelText
+    input.form-control(type=whatType name=fieldName value=fieldValue id=fieldName placeholder=placeholder) 
+
+mixin error(err)
+  if err
+    div.alert.alert-danger(role='alert')
+      p The following error(s) occurred: 
+      ul
+        each e in err
+          li= e

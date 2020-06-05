@@ -1,0 +1,10 @@
+extends layout.pug
+include utils.pug
+
+block content
+  +error(err)
+  form(action='/park/add' method='post')
+    include park-form-fields.pug
+    div
+      button.btn.btn-primary(type="submit") Add Park
+      a.btn.btn-warning.ml-2(href='/' roll='button') Cancel
