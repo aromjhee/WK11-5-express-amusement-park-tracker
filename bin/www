@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const app = require('../app');
+const { port } = require('../config');
 
-const port = 8080;
 
 app.listen(port, () => console.log(`Listening to port ${port}...`));

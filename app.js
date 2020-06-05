@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 
 const routes = require('./routes');
+const { environment } = require('./config')
 
 const app = express();
 
@@ -16,7 +17,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  if (process.env.NODE_ENV === 'development') {
+  if (environment === 'development') {
     
   } else {
     console.error(err);
@@ -32,7 +33,7 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const isProduction = process.env.NODE_ENV === 'production';
+  const isProduction = environment === 'production';
   res.status( err.status || 500).render('error', { 
     title: 'Server Error',
     message: isProduction ? null : err.message,
