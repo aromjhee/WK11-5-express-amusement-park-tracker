@@ -40,12 +40,12 @@ router.get('/park/add', csrfProtection, async(req, res) => {
 router.post('/park/add', csrfProtection, asyncHandler( async(req, res) => {
   const { parkName, city, provinceState, country, opened, size, description } = req.body;
 
-  const newPark = db.Park.build({
+  const park = db.Park.build({
     parkName, city, provinceState, country, opened, size, description
   });
 
   try {
-    await newPark.save();
+    await park.save();
     res.redirect('/');
   } catch(e) {
     if (e.name === 'SequelizeValidationError') {
@@ -53,12 +53,48 @@ router.post('/park/add', csrfProtection, asyncHandler( async(req, res) => {
       const err = e.errors.map(error => error.message);
       res.render('park-add', {
         title: 'Add Park',
-        newPark,
+        park,
         err,
         csrfToken: req.csrfToken()
       })
     } else next(e);
   }
+}));
+
+router.get('/park/edit/:id(\\d+)', csrfProtection, asyncHandler( async (req, res) => {
+  const parkId = parseInt(req.params.id, 10);
+  const park = await db.Park.findByPk(parkId);
+
+  res.render('park-edit', {
+    title: 'Edit Park',
+    park,
+    csrfToken: req.csrfToken()
+  });
+}));
+
+router.post('/park/edit/:id(\\d+)', csrfProtection, asyncHandler(async (req, res) => {
+  const parkId = parseInt(req.params.id, 10);
+  const parkToUpdate = await db.Park.findByPk(parkId);
+  const { parkName, city, provinceState, country, opened, size, description } = req.body;
+  const park = {
+    parkName, city, provinceState, country, opened, size, description
+  };
+
+  try {
+    await parkToUpdate.update(park);
+    res.redirect(`/park/${parkId}`);
+  } catch (e) {
+    if (e.name === 'SequelizeValidationError') {
+      const err = e.errors.map(error => error.message);
+      res.render('park-edit', {
+        title: 'Edit Park',
+        park: {...park, id: parkId },
+        err,
+        csrfToken: req.csrfToken()
+      })
+    } else next(e);
+  }
+
 }));
 
 

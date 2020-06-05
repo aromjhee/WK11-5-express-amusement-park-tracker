@@ -1,10 +1,10 @@
 include utils.pug
 
 input(type='hidden' name='_csrf' value=csrfToken)
-+textField('Park Name', 'parkName', newPark.parkName, 'text')
-+textField('City', 'city', newPark.city, 'text')
-+textField('Province/State', 'provinceState', newPark.provinceState, 'text')
-+textField('Country', 'country', newPark.country, 'text')
-+textField('Opened', 'opened', newPark.opened, 'text', 'ex: 2000-01-31')
-+textField('Size', 'size', newPark.size, 'text')
-textarea(name='description' id='description' rows='10' cols='70' value=newPark.description)
++textField('Park Name', 'parkName', park.parkName, 'text')
++textField('City', 'city', park.city, 'text')
++textField('Province/State', 'provinceState', park.provinceState, 'text')
++textField('Country', 'country', park.country, 'text')
++textField('Opened', 'opened', park.opened, 'text', 'ex: 2000-01-31')
++textField('Size', 'size', park.size, 'text')
+textarea(name='description' id='description' rows='10' cols='70')= park.description
