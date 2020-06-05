@@ -2,6 +2,14 @@
 
 const app = require('../app');
 const { port } = require('../config');
+const db = require('../db/models');
 
-
-app.listen(port, () => console.log(`Listening to port ${port}...`));
+db.sequelize.authenticate()
+  .then(() => {
+    console.log('Successfully conntected to db...');
+    app.listen(port, () => console.log(`Listening to port ${port}...`));
+  })
+  .catch((error) => {
+    console.log("Db connection failure...");
+    console.error(error);
+  })
