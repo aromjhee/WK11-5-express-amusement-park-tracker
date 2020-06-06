@@ -32,9 +32,9 @@ router.get('/park/:id(\\d+)', asyncHandler( async(req, res) => {
 }));
 
 router.get('/park/add', csrfProtection, async(req, res) => {
-  const newPark = db.Park.build();
+  const park = db.Park.build();
   
-  res.render('park-add', { title: 'Add Park', newPark, csrfToken: req.csrfToken() });
+  res.render('park-add', { title: 'Add Park', park, csrfToken: req.csrfToken() });
 });
 
 router.post('/park/add', csrfProtection, asyncHandler( async(req, res) => {
@@ -95,6 +95,25 @@ router.post('/park/edit/:id(\\d+)', csrfProtection, asyncHandler(async (req, res
     } else next(e);
   }
 
+}));
+
+router.get('/park/delete/:id(\\d+)', csrfProtection, asyncHandler( async (req, res) => {
+  const parkId = parseInt(req.params.id, 10);
+  const parkToDelete = await db.Park.findByPk(parkId);
+
+  res.render('park-delete', {
+    title: 'Delete Park',
+    parkToDelete,
+    csrfToken: req.csrfToken()
+  })
+}));
+
+router.post('/park/delete/:id(\\d+)', csrfProtection, asyncHandler( async (req, res) => {
+  const parkId = parseInt(req.params.id, 10);
+  const parkToDelete = await db.Park.findByPk(parkId);
+
+  await parkToDelete.destroy();
+  res.redirect('/parks');
 }));
 
 
